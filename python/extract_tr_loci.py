@@ -51,29 +51,36 @@ def get_sequence_from(chrom,start,end):
 
 with open(simple_repeatsbed,'r') as fh:
     header = fh.readline()
-    for i,line in enumerate(fh):
+    for line in fh:
         line = line.rstrip().split('\t')
         chrom = line[0]
         start = int(line[1])
         end = int(line[2])
+        motif_length = line[3]
+        num_of_motif = line[4]
         tr_seq = line[6]
         
+        if "/" in tr_seq:
+            tr_seq = tr_seq.split("/")[0]
+
         contig_seq = get_sequence_from(chrom,start-flank,end+flank)
         if contig_seq == None:
             continue
-        i = str(i)
-        query_record = SeqRecord(Seq(contig_seq),id=i,name=i,description="")
+
+        out_name = "%s_%s_%s_%s_%s" % (chrom,start,end,motif_length,num_of_motif)
+
+        query_record = SeqRecord(Seq(contig_seq),id=out_name,name=out_name,description="")
         query_records.append(query_record)
 
-        tr_record = SeqRecord(Seq(tr_seq),id=i,name=i,description="")
+        tr_record = SeqRecord(Seq(tr_seq),id=out_name,name=out_name,description="")
         tr_records.append(tr_record)
         
         prefix_seq = ref.fetch(chrom,start-500,start)
-        prefix_record = SeqRecord(Seq(prefix_seq),id=i,name=i,description="")
+        prefix_record = SeqRecord(Seq(prefix_seq),id=out_name,name=out_name,description="")
         prefix_records.append(prefix_record)
 
         suffix_seq = ref.fetch(chrom,end,end+500)
-        suffix_record = SeqRecord(Seq(suffix_seq),id=i,name=i,description="")
+        suffix_record = SeqRecord(Seq(suffix_seq),id=out_name,name=out_name,description="")
         suffix_records.append(suffix_record)
 
 SeqIO.write(tr_records, tr_fasta, "fasta")
