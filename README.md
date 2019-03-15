@@ -21,7 +21,7 @@ python python/parse_hipstr_vcf.py <vcf>
 ```
 python python/extract_tr_loci_from_read_alignment.py <bam> <bed with TRs> <ref> <output dir>
 ```
-`extract_tr_loci_from_read_alignment.py` creates 4 fasta files. These fasta files are used as input for Ummat et al's DP TR detecting algorithm. For every TR coordinate in the `<bed with TRs>`, the sequenced before (prefix) the TR coordinate and after (suffix) the TR coordinate are extracted from the `<ref>`. The TR seq from the `<bed with TRs>` is put into a fasta file. The reads overlapping the TR coordinates are also put into a another fasta file. The 4 fasta files are:
+`extract_tr_loci_from_read_alignment.py` creates 4 fasta files. These fasta files are used as input for Ummat et al's DP TR detecting algorithm. For every TR coordinate in the `<bed with TRs>`, the sequenced before (prefix) the TR coordinate and after (suffix) the TR coordinate are extracted from the `<ref>`. The TR seq from the `<bed with TRs>` is put into a fasta file. The reads overlapping the TR coordinates are also put into a another fasta file. Every entry in a fasta file has the same entry name in all the other fasta files. The 4 fasta files are:
 1. `query.fasta`
 2. `prefix.fasta`
 3. `suffix.fasta`
