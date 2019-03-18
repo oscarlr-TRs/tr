@@ -26,3 +26,9 @@ python python/extract_tr_loci_from_read_alignment.py <bam> <bed with TRs> <ref> 
 2. `prefix.fasta`
 3. `suffix.fasta`
 4. `tr.fasta`
+
+### extract_tr_loci_from_ref.py
+```
+python python/extract_tr_loci_from_ref.py <bed> <ref> <dir>
+```
+This is the same as `extract_tr_loci_from_read_alignment.py` but extracts sequence just from the reference. It is used to detect the number of repeat units in the reference. The `query.fasta` is the reference. The bed file has to have 4 columns: chrom,start,end and the motif seq. The query and prefix is the sequence before and after the input coords, and the `tr.fasta` has the motif seq from the input bed file.
