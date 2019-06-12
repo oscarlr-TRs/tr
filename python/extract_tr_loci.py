@@ -33,6 +33,10 @@ def get_sequence_from(chrom,start,end):
     contig_sequence = None
     for contig in samfile.fetch(chrom,start,end):
         num_contigs += 1
+        if contig.reference_start > start:
+            continue
+        if contig.reference_end < end:
+            continue
         ap = contig.get_aligned_pairs()
         for q_pos, r_pos in ap:
             if q_pos == None:
@@ -57,8 +61,8 @@ with open(simple_repeatsbed,'r') as fh:
         start = int(line[1])
         end = int(line[2])
         motif_length = line[3]
-        num_of_motif = line[4]
-        tr_seq = line[6]
+        tr_seq = line[4]
+        num_of_motif = line[5]
         
         if "/" in tr_seq:
             tr_seq = tr_seq.split("/")[0]

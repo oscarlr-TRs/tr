@@ -31,7 +31,16 @@ def get_sequence_from(chrom,start,end):
     query_end = None
     read_sequence = None
     for read in samfile.fetch(chrom,start,end):
-        num_reads += 1
+        if read.is_secondary:
+            continue
+        if read.is_supplementary:
+            continue
+        if read.is_unmapped:
+            continue
+        if read.reference_start > start:
+            continue
+        if read.reference_end < end:
+            continue
         ap = read.get_aligned_pairs()
         for q_pos, r_pos in ap:
             if q_pos == None:
@@ -48,15 +57,14 @@ def get_sequence_from(chrom,start,end):
     return sequences
 
 with open(simple_repeatsbed,'r') as fh:
-    header = fh.readline()
     for line in fh:
         line = line.rstrip().split('\t')
         chrom = line[0]
         start = int(line[1])
         end = int(line[2])
         motif_length = line[3]
-        num_of_motif = line[4]
-        tr_seq = line[6]
+        tr_seq = line[4]
+        num_of_motif = line[5]
         
         if "/" in tr_seq:
             tr_seq = tr_seq.split("/")[0]
